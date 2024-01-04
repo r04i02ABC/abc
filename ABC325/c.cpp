@@ -1,62 +1,56 @@
-#include <cstdio>
-#include <iostream>
-#include <string>
-#include <cmath> 
+#include <bits/stdc++.h>
 using namespace std;
-int main(void){
+using ll = long long;
+using pint = pair<int,int>;
+using pll = pair<long long, long long>;
+
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define rep1(i,n) for (int i = 1; i <= (int)(n); i++)
+#define YesNo(bool) if(bool) cout << "Yes" << endl; else cout << "No" << endl 
+#define YESNO(bool) if(bool) cout << "YES" << endl; else cout << "NO" << endl 
+bool compare(pint& p1, pint& p2){return p1.second < p2.second;}
+bool compare(pll& p1, pll& p2){return p1.second < p2.second;}//secondの値でfirstをsort
+//bool compare(all_of(check.begin(), check.end(), [](bool x){return x;}))//全ての要素がtrueならtrueを返す
+
+int main(){
     int h,w;
     cin >> h >> w;
-    char s[1000][1000];
-    for(int i=0;i<h;i++){
-        for(int j=0;j<w;j++){
-            cin >> s[i][j];
+    vector<int> x;
+    vector<int> y;
+    int ans=0;
+    vector<vector<char>> s(h,vector<char>(w));
+    int dx[9] = {0,0,0,1,1,1,-1,-1,-1};
+    int dy[9] = {0,1,-1,0,1,-1,0,1,-1};
+    rep(i,h){
+        rep(j,w){
+        cin >> s[i][j];
         }
     }
-    int check = 0;
-
-    for(int i=1;i<h-1;i++){
-        for(int j=1;j<w-1;j++){
-            if(s[i][j]=='#'){
-                s[i][j]='1';
-                while(check==8){
-                    if(s[i-1][j-1]=='#')s[i-1][j-1]='1';
-                    else{
-                        check++;
+    rep(i,h){
+        rep(j,w){
+            if(s[i][j] == '#'){
+                x.push_back(i);
+                y.push_back(j);
+                while(!x.empty()){
+                    s[x[0]][y[0]] = '.'; 
+                    rep(j,9){
+                        int nx = x[0]+dx[j];
+                        int ny = y[0]+dy[j];
+                        if(nx < 0 || nx > h-1 || ny < 0 || ny > w-1){
+                            continue;
+                        }
+                        if(s[nx][ny] == '#'){
+                            s[nx][ny] = '.';
+                            x.push_back(nx);
+                            y.push_back(ny);
+                        }
                     }
-                    if(s[i][j-1]=='#')s[i][j-1]='1';
-                    else{
-                    check++;
-                    }
-                    if(s[i+1][j-1]=='#')s[i+1][j-1]='1';
-                    else{
-                        check++;
-                    }
-                    if(s[i-1][j]=='#')s[i-1][j]='1';
-                    else{
-                        check++;
-                    }
-                    if(s[i][j]=='#')s[i][j]='1';
-                    else{
-                        check++;
-                    }
-                    if(s[i+1][j]=='#')s[i-1][j]='1';
-                    else{
-                    check++;
-                    }
-                    if(s[i-1][j+1]=='#')s[i-1][j+1]='1';
-                    else{
-                    check++;
-                    }
-                    if(s[i][j-1]=='#')s[i][j+1]='1';
-                    else{
-                        check++;
-                    }
-                    if(s[i+1][j+1]=='#')s[i+1][j+1]='1';
-                    else{
-                        check++;
-                    }
+                    x.erase(x.begin());
+                    y.erase(y.begin());
                 }
+                ans++;
             }
         }
     }
+    cout << ans;
 }
