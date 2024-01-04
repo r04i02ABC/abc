@@ -10,36 +10,61 @@ using pll = pair<long long, long long>;
 #define YESNO(bool) if(bool) cout << "YES" << endl; else cout << "NO" << endl 
 bool compare(pint& p1, pint& p2){return p1.second < p2.second;}
 bool compare(pll& p1, pll& p2){return p1.second < p2.second;}//secondの値でfirstをsort
+//bool compare(all_of(check.begin(), check.end(), [](bool x){return x;}))//全ての要素がtrueならtrueを返す
 int main(){
-    int k;
-    cin >> k;
-    vector<int> ans;
-    ans.push_back(0);
-    rep(i,k){
-        ans[0]++;
-        if(ans[0]==10){
-            ans[0]=0;
-            ans.push_back(1);
-        }
-        rep(i,ans.size()-1){
-            if(ans[i]>=ans[i+1]){
-                if(i==0){
-                    ans[i+1]=ans[i]+1;
-                    ans[i]=0;
-                }else{
-                    ans[i]=ans[i-1]+1;
-                    ans[i+1]++;
-                }
-            }
-            if(ans[i+1]==10){
-                ans.push_back(0);
-                rep(j,ans.size()){
-                    ans[j]=j;
-                }
-            }
+    vector<vector<int>> a(9, vector<int>(9));
+    vector<bool> check(9,false);
+    bool ans = true;
+    rep(i,9){
+        rep(j,9){
+            cin >> a[i][j];
         }
     }
-    for(int i=ans.size()-1;i>=0;i--){
-        cout << ans[i];
+
+    rep(i,9){
+        rep(j,9){
+            check[a[i][j]-1] = true;
+        }
+        if(all_of(check.begin(), check.end(), [](bool x){return x;})){
+            rep(i,9){
+                check[i] = false;
+            }
+        }else{
+            ans = false;
+            break;
+        }
+
+        rep(j,9){
+            check[a[j][i]-1] = true;
+        }
+        if(all_of(check.begin(), check.end(), [](bool x){return x;})){
+            rep(i,9){
+                check[i] = false;
+            }
+        }else{
+            ans = false;
+            break;
+        }
     }
+
+    rep(i,3){
+        rep(j,3){
+            rep(k,3){
+                rep(l,3){
+                    check[a[i*3+k][j*3+l]-1] = true;
+                }
+            }
+            if(all_of(check.begin(), check.end(), [](bool x){return x;})){
+                rep(i,9){
+                    check[i] = false;
+                }
+            }else{
+                ans = false;
+                break;
+            }
+        }
+        if(ans == false) break;
+    }
+
+    YesNo(ans);
 }
