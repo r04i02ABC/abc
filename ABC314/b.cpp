@@ -12,45 +12,44 @@ bool compare(pint& p1, pint& p2){return p1.second < p2.second;}
 //bool compare(pll& p1, pll& p2){return p1.second < p2.second;}//secondの値でfirstをsort
 //bool compare(all_of(check.begin(), check.end(), [](bool x){return x;}))//全ての要素がtrueならtrueを返す
 int main(){
-    int n;
+    int n,x;
     cin >> n;
     vector<int> c(n);
     vector<vector<int>> a(n,vector<int>(40));
-    vector<pint> count(40);
-    int x;
     rep(i,n){
         cin >> c[i];
         rep(j,c[i]){
             cin >> a[i][j];
-            count[i].second++;
         }
     }
     cin >> x;
+    
+    int minimum = 1000000000;
+    vector<pint> ans;
     rep(i,n){
-        rep(j,count[i].second){
+        rep(j,c[i]){
             if(a[i][j]==x){
-                count[i].first = i+1;
+                pint tmp;
+                minimum = min(minimum,c[i]);
+                tmp.first = i;
+                tmp.second = c[i];
+                ans.push_back(tmp);
+
             }
         }
     }
-
-    int ans = count[0].second; 
+    
     int cnt = 0;
 
-    rep(i,n){
-        min(ans,count[i].first);
-    }
-    rep(i,n){
-        if(count[i].second==ans){
+    rep(i,ans.size()){
+        if(ans[i].second==minimum){
             cnt++;
         }
     }
-    cout << cnt << endl; 
-    if(cnt!=0){
-        rep(i,n){
-            if(count[i].second==ans){
-                cout << count[i].first << " ";
-            }
+    cout << cnt << endl;
+    rep(i,ans.size()){
+        if(ans[i].second==minimum){
+            cout << ans[i].first+1 << " ";
         }
-    } 
+    }
 }
